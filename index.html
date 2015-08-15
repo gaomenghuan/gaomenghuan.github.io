@@ -189,7 +189,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="如果你和我一样是技术小白…">如果你和我一样是技术小白…</h2><p>I assume你和我一样，许多基本起步工具都还没有配置好。下面先一个一个来安装：</p>
+        <h1 id="如果你和我一样是技术小白…">如果你和我一样是技术小白…</h1><p>I assume你和我一样，许多基本起步工具都还没有配置好。下面先一个一个来安装：</p>
 <ul>
 <li>Xcode </li>
 </ul>
@@ -215,18 +215,14 @@
 <p>Node是一个js的运行环境。为什么要装这个呢？因为Hexo就是基于Node.js开发哒。</p>
 </blockquote>
 <p>具体安装方法就不说了，百度一搜一大堆。</p>
-<h2 id="安装Hexo">安装Hexo</h2><p>Hexo的正常安装方法可在<a href="https://hexo.io/docs/" title="Hexo Documentation" target="_blank" rel="external">Hexo Documentation</a>里查阅。下面只说说我遇到的一个坑：</p>
+<h1 id="安装Hexo">安装Hexo</h1><p>Hexo的正常安装方法可在<a href="https://hexo.io/docs/" title="Hexo Documentation" target="_blank" rel="external">Hexo Documentation</a>里查阅。下面只说说我遇到的一个坑：</p>
 <p><strong>npm安装Hexo报错</strong></p>
 <p>简直不晓得该说什么了，因为这个，重装了无数次Node，担心是Node没安装完整的原因。然后用npm测试安装别的比如express，都是可以的啊啊啊！最后解决方式是：</p>
 <p>使用</p>
-<blockquote>
 <p><code>sudo npm install --unsafe-perm --verbose -g hexo-cli</code></p>
-</blockquote>
 <p>替换原始命令</p>
-<blockquote>
 <p><code>npm install hexo-cli -g</code></p>
-</blockquote>
-<h2 id="使用Hexo">使用Hexo</h2><ol>
+<h1 id="使用Hexo">使用Hexo</h1><ol>
 <li><p>先到<a href="https://github.com/" title="GitHub" target="_blank" rel="external">GitHub</a>注册一个账号，免费申请一个repository，用来存放你的Hexo博客内容。</p>
 </li>
 <li><p>然后根据<a href="https://pages.github.com/" title="GitHub Pages" target="_blank" rel="external">GitHub Pages</a>的说明来创建你的Github pages.</p>
@@ -235,8 +231,7 @@
 </li>
 </ol>
 <p>至此，你的博客就已经可以在你的username.github.io上看到啦。</p>
-<p>##But，如果你还想使用独立域名…</p>
-<p>好吧，这就涉及到独立域名解析绑定至GitHub的内容了。</p>
+<h1 id="But，如果你还想使用独立域名…">But，如果你还想使用独立域名…</h1><p>好吧，这就涉及到独立域名解析绑定至GitHub的内容了。</p>
 <ol>
 <li><p>遵照<a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/" target="_blank" rel="external">GitHub Help</a>的提示，创建CNAME文件，解析域名；</p>
 </li>
