@@ -103,7 +103,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a>
+						<a href="/tags/Algorithm/" style="font-size: 10px;">Algorithm</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a>
 					</div>
 				</section>
 				
@@ -189,16 +189,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="How_Not_To_Sort_By_Average_Rating">How Not To Sort By Average Rating</h3><h3 id="PROBLEM:">PROBLEM:</h3><p>You are a web programmer. You have users. Your users rate stuff on your site. You want to put the highest-rated stuff at the top and lowest-rated at the bottom. You need some sort of “score” to sort by.</p>
-<h3 id="WRONG_SOLUTION">WRONG SOLUTION</h3><p>1: Score = (Positive ratings) - (Negative ratings)</p>
+        <h2 id="How_Not_To_Sort_By_Average_Rating">How Not To Sort By Average Rating</h2><h2 id="PROBLEM:">PROBLEM:</h2><p>You are a web programmer. You have users. Your users rate stuff on your site. You want to put the highest-rated stuff at the top and lowest-rated at the bottom. You need some sort of “score” to sort by.</p>
+<h2 id="WRONG_SOLUTION">WRONG SOLUTION</h2><p>###1: Score = (Positive ratings) - (Negative ratings)</p>
 <p>Why it is wrong: Suppose one item has 600 positive ratings and 400 negative ratings: 60% positive. Suppose item two has 5,500 positive ratings and 4,500 negative ratings: 55% positive. This algorithm puts item two (score = 1000, but only 55% positive) above item one (score = 200, and 60% positive). WRONG.</p>
 <p>Sites that make this mistake: Urban Dictionary</p>
 <p><img src="http://7xl3ou.com1.z0.glb.clouddn.com/blog-1.png" alt="text"></p>
-<h3 id="WRONG_SOLUTION-1">WRONG SOLUTION</h3><p>2: Score = Average rating = (Positive ratings) / (Total ratings)</p>
+<h2 id="WRONG_SOLUTION-1">WRONG SOLUTION</h2><p>###2: Score = Average rating = (Positive ratings) / (Total ratings)</p>
 <p>Why it is wrong: Average rating works fine if you always have a ton of ratings, but suppose item 1 has 2 positive ratings and 0 negative ratings. Suppose item 2 has 100 positive ratings and 1 negative rating. This algorithm puts item two (tons of positive ratings) below item one (very few positive ratings). WRONG.</p>
 <p>Sites that make this mistake: Amazon.com</p>
 <p><img src="http://7xl3ou.com1.z0.glb.clouddn.com/blog-2.png" alt="text"></p>
-<h3 id="CORRECT_SOLUTION:">CORRECT SOLUTION:</h3><p>Score = Lower bound of Wilson score confidence interval for a Bernoulli parameter</p>
+<h2 id="CORRECT_SOLUTION:">CORRECT SOLUTION:</h2><p>###Score = Lower bound of Wilson score confidence interval for a Bernoulli parameter</p>
 <p>Say what: We need to balance the proportion of positive ratings with the uncertainty of a small number of observations. Fortunately, the math for this was worked out in 1927 by Edwin B. Wilson. What we want to ask is: Given the ratings I have, there is a 95% chance that the “real” fraction of positive ratings is at least what? Wilson gives the answer. Considering only positive and negative ratings (i.e. not a 5-star scale), the lower bound on the proportion of positive ratings is given by:</p>
 <p><img src="http://7xl3ou.com1.z0.glb.clouddn.com/blog-3.png" alt="text"></p>
 <p>(Use minus where it says plus/minus to calculate the lower bound.) Here p̂ is the observed fraction of positive ratings, zα/2 is the (1-α/2) quantile of the standard normal distribution, and n is the total number of ratings. The same formula implemented in Ruby:</p>
@@ -212,6 +212,10 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li></ul>
+	</div>
+
       
 
       
