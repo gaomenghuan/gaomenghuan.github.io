@@ -14,7 +14,7 @@
 <meta property="og:image" content="http://7xl3ou.com1.z0.glb.clouddn.com/blog-1.png">
 <meta property="og:image" content="http://7xl3ou.com1.z0.glb.clouddn.com/blog-2.png">
 <meta property="og:image" content="http://7xl3ou.com1.z0.glb.clouddn.com/blog-3.png">
-<meta property="og:updated_time" content="2015-09-01T07:47:23.000Z">
+<meta property="og:updated_time" content="2015-09-01T07:49:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于用户投票的排名算法：威尔逊区间">
 <meta name="twitter:description" content="How Not To Sort By Average RatingPROBLEM:You are a web programmer. You have users. Your users rate stuff on your site. You want to put the highest-rated stuff at the top and lowest-rated at the bottom">
@@ -203,19 +203,24 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="How_Not_To_Sort_By_Average_Rating">How Not To Sort By Average Rating</h2><h2 id="PROBLEM:">PROBLEM:</h2><p>You are a web programmer. You have users. Your users rate stuff on your site. You want to put the highest-rated stuff at the top and lowest-rated at the bottom. You need some sort of “score” to sort by.</p>
-<h2 id="WRONG_SOLUTION">WRONG SOLUTION</h2><p>###1: Score = (Positive ratings) - (Negative ratings)</p>
-<p>Why it is wrong: Suppose one item has 600 positive ratings and 400 negative ratings: 60% positive. Suppose item two has 5,500 positive ratings and 4,500 negative ratings: 55% positive. This algorithm puts item two (score = 1000, but only 55% positive) above item one (score = 200, and 60% positive). WRONG.</p>
+<h2 id="WRONG_SOLUTION">WRONG SOLUTION</h2><h3 id="1:_Score_=_(Positive_ratings)_-_(Negative_ratings)">1: Score = (Positive ratings) - (Negative ratings)</h3><p>Why it is wrong: Suppose one item has 600 positive ratings and 400 negative ratings: 60% positive. Suppose item two has 5,500 positive ratings and 4,500 negative ratings: 55% positive. This algorithm puts item two (score = 1000, but only 55% positive) above item one (score = 200, and 60% positive). WRONG.</p>
 <p>Sites that make this mistake: Urban Dictionary</p>
 <p><img src="http://7xl3ou.com1.z0.glb.clouddn.com/blog-1.png" alt="text"></p>
-<h2 id="WRONG_SOLUTION-1">WRONG SOLUTION</h2><p>###2: Score = Average rating = (Positive ratings) / (Total ratings)</p>
-<p>Why it is wrong: Average rating works fine if you always have a ton of ratings, but suppose item 1 has 2 positive ratings and 0 negative ratings. Suppose item 2 has 100 positive ratings and 1 negative rating. This algorithm puts item two (tons of positive ratings) below item one (very few positive ratings). WRONG.</p>
+<h2 id="WRONG_SOLUTION-1">WRONG SOLUTION</h2><h3 id="2:_Score_=_Average_rating_=_(Positive_ratings)_/_(Total_ratings)">2: Score = Average rating = (Positive ratings) / (Total ratings)</h3><p>Why it is wrong: Average rating works fine if you always have a ton of ratings, but suppose item 1 has 2 positive ratings and 0 negative ratings. Suppose item 2 has 100 positive ratings and 1 negative rating. This algorithm puts item two (tons of positive ratings) below item one (very few positive ratings). WRONG.</p>
 <p>Sites that make this mistake: Amazon.com</p>
 <p><img src="http://7xl3ou.com1.z0.glb.clouddn.com/blog-2.png" alt="text"></p>
-<h2 id="CORRECT_SOLUTION:">CORRECT SOLUTION:</h2><p>###Score = Lower bound of Wilson score confidence interval for a Bernoulli parameter</p>
-<p>Say what: We need to balance the proportion of positive ratings with the uncertainty of a small number of observations. Fortunately, the math for this was worked out in 1927 by Edwin B. Wilson. What we want to ask is: Given the ratings I have, there is a 95% chance that the “real” fraction of positive ratings is at least what? Wilson gives the answer. Considering only positive and negative ratings (i.e. not a 5-star scale), the lower bound on the proportion of positive ratings is given by:</p>
+<h2 id="CORRECT_SOLUTION:">CORRECT SOLUTION:</h2><h3 id="Score_=_Lower_bound_of_Wilson_score_confidence_interval_for_a_Bernoulli_parameter">Score = Lower bound of Wilson score confidence interval for a Bernoulli parameter</h3><p>Say what: We need to balance the proportion of positive ratings with the uncertainty of a small number of observations. Fortunately, the math for this was worked out in 1927 by Edwin B. Wilson. What we want to ask is: Given the ratings I have, there is a 95% chance that the “real” fraction of positive ratings is at least what? Wilson gives the answer. Considering only positive and negative ratings (i.e. not a 5-star scale), the lower bound on the proportion of positive ratings is given by:</p>
 <p><img src="http://7xl3ou.com1.z0.glb.clouddn.com/blog-3.png" alt="text"></p>
 <p>(Use minus where it says plus/minus to calculate the lower bound.) Here p̂ is the observed fraction of positive ratings, zα/2 is the (1-α/2) quantile of the standard normal distribution, and n is the total number of ratings. The same formula implemented in Ruby:</p>
-<p><code>require &#39;statistics2&#39;</code><br><code>def ci_lower_bound(pos, n, confidence)</code><br>    <code>if n == 0</code><br>        <code>return 0</code><br>    <code>end</code><br>    <code>z = Statistics2.pnormaldist(1-(1-confidence)/2)</code><br>    <code>phat = 1.0*pos/n</code><br>    <code>(phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)</code><br><code>end</code></p>
+<p><code>require &#39;statistics2&#39;
+def ci_lower_bound(pos, n, confidence)
+    if n == 0
+        return 0
+    end
+    z = Statistics2.pnormaldist(1-(1-confidence)/2)
+    phat = 1.0*pos/n
+    (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
+end</code></p>
 <p><code>pos</code> is the number of positive ratings, <code>n</code> is the total number of ratings, and <code>confidence</code> refers to the statistical confidence level: pick 0.95 to have a 95% chance that your lower bound is correct, 0.975 to have a 97.5% chance, etc. The z-score in this function never changes, so if you don’t have a statistics package handy or if performance is an issue you can always hard-code a value here for z. (Use 1.96 for a confidence level of 0.95.)</p>
 <h3 id="REFERENCE">REFERENCE</h3><p><a href="http://www.yixieshi.com/it/11299.html" target="_blank" rel="external">基于用户投票的排名算法：威尔逊区间</a></p>
 
